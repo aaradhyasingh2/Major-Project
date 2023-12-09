@@ -1,0 +1,286 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Manage Stations</title>
+</head>
+<style>
+    .add-keyword-panel {
+        margin-top: 150px;
+</style>
+<body background="static/soldiers-1002_1920.jpg">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+	</br>
+	<!--style="visibility:hidden;"-->
+	<h3 class="text-center   badge-secondary" >Manage Police Stations</h3></br>
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+	  <a class="navbar-brand text-success" href="/admin_account">Admin Home</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item {%if active== 'Add Police Stations'%} active{%endif%}">
+			<a class="nav-link" href="?opt=add_police_stations">Add Police Stations</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Update Police Stations'%} active{%endif%}">
+			<a class="nav-link" href="?opt=update_police_stations">Update Police Stations</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Display Police Stations'%} active{%endif%}">
+			<a class="nav-link" href="?opt=display_police_stations">Display Police Stations</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Delete Police Stations'%} active{%endif%}">
+			<a class="nav-link" href="?opt=delete_police_stations">Delete Police Stations</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link text-danger" href="/logout">Log-Out</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+
+
+	{%if active == 'Add Police Stations'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Add Police Station</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/add_station">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Station Name" name="name" type="text" autofocus required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Station Location" name="location" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Pin Code" name="pincode" type="text" required>
+                            </div>
+                             <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> </textarea>
+                            </div>
+							<div class="form-group">
+                                <input class="form-control text-success" placeholder="Phone" name="phone" type="tel" required>
+                            </div>
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Add Station">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Update Police Stations' and stationToUpdate == None%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Update Police Stations:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Location</th>
+					<th align="center">Pincode</th>
+					<th align="center">Address</th>
+					<th align="center">Phone</th>
+					<th align="center">Update</th>
+
+				</tr>
+				</thead>
+
+				{% for station in stations %}
+				<tr>
+					<td align="center">{{station[0]}}</td>
+					<td align="center">{{station[1]}}</td>
+					<td align="center">{{station[2]}}</td>
+					<td align="center">{{station[3]}}</td>
+					<td align="center">{{station[4]}}</td>
+					<td align="center">{{station[5]}}</td>
+					<td align="center"><a href="?opt=update_police_stations&update_id={{station[0]}}" class="btn btn-md btn-primary btn-block">Update</a></td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+	{%if active== 'Update Police Stations' and stationToUpdate != None%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Update Police Station</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/update_station">
+                        <fieldset>
+							<div class="form-group">
+								<h5>Station Id</h5>
+                                <input class="form-control text-success" value="{{stationToUpdate[0]}}" placeholder="Station Id" name="station_id" type="text" required readonly>
+                            </div>
+                            <div class="form-group">
+								<h5>Station Name</h5>
+                                <input class="form-control text-success" value="{{stationToUpdate[1]}}" placeholder="Station Name" name="name" type="text" autofocus required>
+                            </div>
+                            <div class="form-group">
+								<h5>Station Location</h5>
+                                <input class="form-control text-success" value="{{stationToUpdate[2]}}" placeholder="Station Location" name="location" type="text" required>
+                            </div>
+                            <div class="form-group">
+								<h5>pincode</h5>
+                                <input class="form-control text-success" value="{{stationToUpdate[3]}}" placeholder="Pin Code" name="pincode" type="text" required>
+                            </div>
+                             <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> {{stationToUpdate[4]}} </textarea>
+                            </div>
+							<div class="form-group">
+								<h5>Phone</h5>
+                                <input class="form-control text-success" value="{{stationToUpdate[5]}}" placeholder="Phone" name="phone" type="tel" required>
+                            </div>
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Update Station">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+
+
+	{%if active== 'Display Police Stations'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Display Police Stations:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Location</th>
+					<th align="center">Pincode</th>
+					<th align="center">Address</th>
+					<th align="center">Phone</th>
+
+				</tr>
+				</thead>
+
+				{% for station in stations %}
+				<tr>
+					<td align="center">{{station[0]}}</td>
+					<td align="center">{{station[1]}}</td>
+					<td align="center">{{station[2]}}</td>
+					<td align="center">{{station[3]}}</td>
+					<td align="center">{{station[4]}}</td>
+					<td align="center">{{station[5]}}</td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+	{%if active== 'Delete Police Stations'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Delete Police Stations:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Location</th>
+					<th align="center">Pincode</th>
+					<th align="center">Address</th>
+					<th align="center">Phone</th>
+					<th align="center">Delete</th>
+
+				</tr>
+				</thead>
+
+				{% for station in stations %}
+				<tr>
+					<td align="center">{{station[0]}}</td>
+					<td align="center">{{station[1]}}</td>
+					<td align="center">{{station[2]}}</td>
+					<td align="center">{{station[3]}}</td>
+					<td align="center">{{station[4]}}</td>
+					<td align="center">{{station[5]}}</td>
+					<td align="center"><a href="delete_station?id={{station[0]}}" class="btn btn-md btn-danger btn-block">Delete</a></td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+
+
+	{%if active== 'Update Password'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Update Password</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="post" action="/update_password">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="old password" name="oldpassword" type="password" autofocus required>>
+                            </div>
+							<div class="form-group">
+                                <input class="form-control text-success" placeholder="new password" name="newpassword1" type="password" autofocus required>>
+                            </div>
+							<div class="form-group">
+                                <input class="form-control text-success" placeholder="retype password" name="newpassword2" type="password" autofocus required>>
+                            </div>
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Update Password">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>
+
+</html>

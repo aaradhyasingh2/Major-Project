@@ -1,0 +1,263 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Manage Emergency Complaints</title>
+</head>
+<style>
+    .add-keyword-panel {
+        margin-top: 150px;
+</style>
+<body background="static/soldiers-1002_1920.jpg">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+	</br>
+	<!--style="visibility:hidden;"-->
+	<h3 class="text-center   badge-secondary" >Manage Emergency Complaints</h3></br>
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+	  <a class="navbar-brand text-success" href="/admin_account">Admin Home</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item {%if active== 'Add Emergency Complaint'%} active{%endif%}">
+			<a class="nav-link" href="?opt=add_emergency_complaints">Add Emergency Complaint</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Update Emergency Complaint'%} active{%endif%}">
+			<a class="nav-link" href="?opt=update_emergency_complaints">Update Emergency Complaint</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Display Emergency Complaint'%} active{%endif%}">
+			<a class="nav-link" href="?opt=display_emergency_complaints">Display Emergency Complaint</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Delete Emergency Complaint'%} active{%endif%}">
+			<a class="nav-link" href="?opt=delete_emergency_complaints">Delete Emergency Complaint</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link text-danger" href="/logout">Log-Out</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+
+
+	{%if active == 'Add Emergency Complaint'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Add Emergency Complaint</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/add_emergency_complaint">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Name" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Phone" name="phone" type="text" required>
+                            </div>
+							 <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> </textarea>
+                            </div>
+							<div class="form-group">
+                                <input class="form-control text-success" placeholder="Description" name="description" type="text" required>
+                            </div>
+							<div class="form-group">
+								 <h6>Select Station</h6>
+                                <select class="form-select" name="station_name" aria-label="Station Selection">
+									{% for station in all_stations %}
+								  	<option value="{{station[1]}}">{{station[1]}}</option>
+									{%endfor%}
+								</select>
+                            </div>
+							<div class="form-group">
+                                <input class="form-control text-success" placeholder="status" name="status" type="text" required>
+                            </div>
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Add Emergency Complaint">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Update Emergency Complaint' and complaintToUpdate == None%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Update Emergency Complaint:</h1>
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Address </th>
+					<th align="center">Description </th>
+					<th align="center">Station Name</th>
+					<th align="center">Status</th>
+					<th align="center">Date and Time</th>
+					<th align="center">Update </th>
+				</tr>
+				</thead>
+				{% for complaint in allComplaints %}
+				<tr>
+					<td align="center">{{complaint[0]}}</td>
+					<td align="center">{{complaint[1]}}</td>
+					<td align="center">{{complaint[2]}}</td>
+					<td align="center">{{complaint[3]}}</td>
+					<td align="center">{{complaint[4]}}</td>
+					<td align="center">{{complaint[5]}}</td>
+					<td align="center">{{complaint[6]}}</td>
+					<td align="center">{{complaint[7]}}</td>
+					<td align="center"><a href="?opt=update_emergency_complaints&update_id={{complaint[0]}}" class="btn btn-md btn-primary btn-block">Update</a></td>
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+	{%if active== 'Update Emergency Complaint' and complaintToUpdate != None%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Update Complaints</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/update_emergency_complaint">
+                        <fieldset>
+							<div class="form-group">
+								<h5>Complaint ID</h5>
+                                <input class="form-control text-success" value="{{complaintToUpdate[0]}}" placeholder="Citizen id" name="complaint_db_id" type="text" required readonly>
+                            </div>
+                            <div class="form-group">
+								<h5>User Name</h5>
+                                <input class="form-control text-success" value="{{complaintToUpdate[1]}}" placeholder="Name" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+								<h5>User Phone</h5>
+                                <input class="form-control text-success" value="{{complaintToUpdate[2]}}" placeholder="phone" name="phone" type="tel" required>
+                            </div>
+							<div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> {{complaintToUpdate[3]}} </textarea>
+                            </div>
+							<div class="form-group">
+                                 <h5>Description</h5>
+                                 <textarea class="form-control text-success" placeholder="Description" name="description" type="text" required> {{complaintToUpdate[4]}} </textarea>
+                            </div>
+
+							<div class="form-group">
+								<h6>Station Name : {{complaintToUpdate[5]}} </h6>
+								 <div class="form-group">
+								 <h6>Select Station</h6>
+									<select class="form-select" name="station_name" aria-label="Station Selection">
+										{% for station in all_stations %}
+										<option {%if station[1] == complaintToUpdate[5]%} selected {%endif%} value="{{station[1]}}">{{station[1]}}</option>
+										{%endfor%}
+									</select>
+                            	</div>
+							<div class="form-group">
+								<h5>Complaint Status</h5>
+                                <input class="form-control text-success" value="{{complaintToUpdate[6]}}" placeholder="status" name="status" type="text" required>
+                            </div>
+                            </div>
+
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Update Emergency Complaint">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Display Emergency Complaint'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Display Emergency Complaints:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Address</th>
+					<th align="center">Description</th>
+					<th align="center">Station Name</th>
+					<th align="center">Status</th>
+					<th align="center">Date and Time</th>
+				</tr>
+				</thead>
+
+				{% for complaint in allComplaints %}
+				<tr>
+					<td align="center">{{complaint[0]}}</td>
+					<td align="center">{{complaint[1]}}</td>
+					<td align="center">{{complaint[2]}}</td>
+					<td align="center">{{complaint[3]}}</td>
+					<td align="center">{{complaint[4]}}</td>
+					<td align="center">{{complaint[5]}}</td>
+					<td align="center">{{complaint[6]}}</td>
+					<td align="center">{{complaint[7]}}</td>
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+	{%if active== 'Delete Emergency Complaint'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Delete Emergency Complaints:</h1>
+
+		    <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Address</th>
+					<th align="center">Description</th>
+					<th align="center">Station Name</th>
+					<th align="center">Status</th>
+					<th align="center">Date and Time</th>
+					<th align="center">Delete</th>
+				</tr>
+				</thead>
+				{% for complaint in allComplaints %}
+				<tr>
+					<td align="center">{{complaint[0]}}</td>
+					<td align="center">{{complaint[1]}}</td>
+					<td align="center">{{complaint[2]}}</td>
+					<td align="center">{{complaint[3]}}</td>
+					<td align="center">{{complaint[4]}}</td>
+					<td align="center">{{complaint[5]}}</td>
+					<td align="center">{{complaint[6]}}</td>
+					<td align="center">{{complaint[7]}}</td>
+					<td align="center"><a href="delete_emergency_complaint?id={{complaint[0]}}" class="btn btn-md btn-danger btn-block">Delete</a></td>
+				</tr>
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+</div>
+</body>
+</html>

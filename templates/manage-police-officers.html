@@ -1,0 +1,283 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Manage Officers</title>
+</head>
+<style>
+    .add-keyword-panel {
+        margin-top: 150px;
+</style>
+<body background="static/soldiers-1002_1920.jpg">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+	</br>
+	<!--style="visibility:hidden;"-->
+	<h3 class="text-center   badge-secondary" >Manage Police Officers</h3></br>
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+	  <a class="navbar-brand text-success" href="/admin_account">Admin Home</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item {%if active== 'Add Police Officer'%} active{%endif%}">
+			<a class="nav-link" href="?opt=add_police_officers">Add Police Officer</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Update Police Officer'%} active{%endif%}">
+			<a class="nav-link" href="?opt=update_police_officers">Update Police Officer</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Display Police Officer'%} active{%endif%}">
+			<a class="nav-link" href="?opt=display_police_officers">Display Police Officer</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Delete Police Officer'%} active{%endif%}">
+			<a class="nav-link" href="?opt=delete_police_officers">Delete Police Officer</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link text-danger" href="/logout">Log-Out</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+
+
+	{%if active == 'Add Police Officer'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Add Police Officer</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/add_officer">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Officer Id" name="officer_id" type="text" autofocus required>
+                            </div>
+							 <div class="form-group">
+								 <h6>Select Station</h6>
+                                <select class="form-select" name="station_name" aria-label="Station Selection">
+									{% for station in all_stations %}
+								  	<option value="{{station[1]}}">{{station[1]}}</option>
+									{%endfor%}
+								</select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Name" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Phone" name="phone" type="tel" required>
+                            </div>
+							 <div class="form-group">
+                                <input class="form-control text-success" placeholder="Password" name="psw" type="password" required>
+                            </div>
+                             <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> </textarea>
+                            </div>
+
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Add Officer">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Update Police Officer' and officerToUpdate == None%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Update Police Officer:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Officer ID</th>
+					<th align="center">Station Name</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Password</th>
+					<th align="center">Address</th>
+					<th align="center">Update</th>
+				</tr>
+				</thead>
+
+				{% for officer in allOfficers %}
+				<tr>
+					<td align="center">{{officer[0]}}</td>
+					<td align="center">{{officer[1]}}</td>
+					<td align="center">{{officer[6]}}</td>
+					<td align="center">{{officer[2]}}</td>
+					<td align="center">{{officer[3]}}</td>
+					<td align="center">{{officer[4]}}</td>
+					<td align="center">{{officer[5]}}</td>
+					<td align="center"><a href="?opt=update_police_officers&update_id={{officer[0]}}" class="btn btn-md btn-primary btn-block">Update</a></td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+	{%if active== 'Update Police Officer' and officerToUpdate != None%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Update Police Officer</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/update_officer">
+                        <fieldset>
+							<div class="form-group">
+								<h5>Officer Serial no</h5>
+                                <input class="form-control text-success" value="{{officerToUpdate[0]}}" placeholder="Officer serial" name="officer_db_id" type="text" required readonly>
+                            </div>
+                            <div class="form-group">
+								<h5>Officer Id</h5>
+                                <input class="form-control text-success" value="{{officerToUpdate[1]}}" placeholder="Officer Id" name="officer_id" type="text" autofocus required>
+                            </div>
+                            <div class="form-group">
+								<h5>Name</h5>
+                                <input class="form-control text-success" value="{{officerToUpdate[2]}}" placeholder="Name" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+								<h5>Phone</h5>
+                                <input class="form-control text-success" value="{{officerToUpdate[3]}}" placeholder="phone" name="phone" type="tel" required>
+                            </div>
+							 <div class="form-group">
+								<h5>Password</h5>
+                                <input class="form-control text-success" value="{{officerToUpdate[4]}}" placeholder="pass" name="pass" type="text" required>
+                            </div>
+							<div class="form-group">
+								<h6>Station Name : {{officerToUpdate[6]}} </h6>
+								 <div class="form-group">
+								 <h6>Select Station</h6>
+									<select class="form-select" name="station_name" aria-label="Station Selection">
+										{% for station in all_stations %}
+										<option  {%if station[1] == officerToUpdate[6]%} selected {%endif%} value="{{station[1]}}">{{station[1]}}</option>
+										{%endfor%}
+									</select>
+                            	</div>
+
+                            </div>
+                             <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> {{officerToUpdate[5]}} </textarea>
+                            </div>
+
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Update Officer">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+
+
+	{%if active== 'Display Police Officer'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Display Police Officers:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Officer ID</th>
+					<th align="center">Station Name</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Password</th>
+					<th align="center">Address</th>
+				</tr>
+				</thead>
+
+				{% for officer in allOfficers %}
+				<tr>
+					<td align="center">{{officer[0]}}</td>
+					<td align="center">{{officer[1]}}</td>
+					<td align="center">{{officer[6]}}</td>
+					<td align="center">{{officer[2]}}</td>
+					<td align="center">{{officer[3]}}</td>
+					<td align="center">{{officer[4]}}</td>
+					<td align="center">{{officer[5]}}</td>
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+	{%if active== 'Delete Police Officer'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Delete Police Officers:</h1>
+
+		    <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Officer ID</th>
+					<th align="center">Station Name</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Password</th>
+					<th align="center">Address</th>
+					<th align="center">Delete</th>
+				</tr>
+				</thead>
+
+				{% for officer in allOfficers %}
+				<tr>
+					<td align="center">{{officer[0]}}</td>
+					<td align="center">{{officer[1]}}</td>
+					<td align="center">{{officer[6]}}</td>
+					<td align="center">{{officer[2]}}</td>
+					<td align="center">{{officer[3]}}</td>
+					<td align="center">{{officer[4]}}</td>
+					<td align="center">{{officer[5]}}</td>
+					<td align="center"><a href="delete_officer?id={{officer[0]}}" class="btn btn-md btn-danger btn-block">Delete</a></td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>
+
+</html>

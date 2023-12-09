@@ -1,0 +1,165 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Public Account</title>
+</head>
+<style>
+    .add-keyword-panel {
+        margin-top: 70px;
+</style>
+<body background="static/soldiers-1002_1920.jpg">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+	</br>
+	<!--style="visibility:hidden;"-->
+	<h3 class="text-center   badge-secondary" >Citizen Account</h3></br>
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<li class="nav-item {%if active== 'Display Emergency Complaint'%} active{%endif%}">
+				<a class="nav-link" href="?opt=display_public_emergency_complaint">Display Emergency Complaint</span></a>
+			</li>
+			<li class="nav-item {%if active== 'Register Emergency Complaint'%} active{%endif%}">
+				<a class="nav-link" href="?opt=register_public_emergency_complaint">Register Emergency Complaint</span></a>
+			</li>
+            <li class="nav-item {%if active== 'Feedback'%} active{%endif%}">
+				<a class="nav-link" href="?opt=feedback_public">Feedback</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-danger" href="/logout">Log-Out</a>
+			</li>
+		</ul>
+	  </div>
+	</nav>
+
+
+
+
+
+
+	{%if active == 'Register Emergency Complaint'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Register Emergency Complaint</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/register_emergency_complaint_public">
+                        <fieldset>
+                            <div class="form-group">
+								<h6>Name</h6>
+                                <input class="form-control text-success" placeholder="Name" value="public" name="name" type="text" readonly required>
+                            </div>
+                            <div class="form-group">
+								<h6>Phone</h6>
+                                <input class="form-control text-success" placeholder="Phone" value="public" name="phone" type="text" readonly required>
+                            </div>
+							 <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" readonly required>public</textarea>
+                            </div>
+							 <div class="form-group">
+                                 <h5>Complaint</h5>
+                                 <textarea class="form-control text-success" placeholder="Complaint" name="description" type="text" required></textarea>
+                            </div>
+
+							<div class="form-group">
+								 <h6>Select Station</h6>
+                                <select class="form-select" name="station_name" aria-label="Station Selection">
+									{% for station in all_stations %}
+								  	<option value="{{station[1]}}">{{station[1]}}</option>
+									{%endfor%}
+								</select>
+                            </div>
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Register Emergency Complaint">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+    {%if active== 'Display Emergency Complaint'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Display Complaint Complaints:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Address</th>
+					<th align="center">Description</th>
+					<th align="center">Station Name</th>
+					<th align="center">Status</th>
+					<th align="center">Date and Time</th>
+
+				</tr>
+				</thead>
+
+				{% for complaint in allComplaintsOfCitizen %}
+				<tr>
+					<td align="center">{{complaint[0]}}</td>
+					<td align="center">{{complaint[1]}}</td>
+					<td align="center">{{complaint[2]}}</td>
+					<td align="center">{{complaint[3]}}</td>
+					<td align="center">{{complaint[4]}}</td>
+					<td align="center">{{complaint[5]}}</td>
+					<td align="center">{{complaint[6]}}</td>
+					<td align="center">{{complaint[7]}}</td>
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+    {%if active == 'Feedback'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Submit Feedback</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/add_feedback_public">
+                        <fieldset>
+
+							 <div class="form-group">
+                                 <h5>Feedback</h5>
+                                 <textarea class="form-control text-success" placeholder="Feedback" name="feedback" type="text" required> </textarea>
+                            </div>
+							<input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Submit Feedback">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+
+
+</div>
+
+
+
+
+</body>
+
+</html>

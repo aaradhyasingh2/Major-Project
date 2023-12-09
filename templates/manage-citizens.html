@@ -1,0 +1,269 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Manage Citizens</title>
+</head>
+<style>
+    .add-keyword-panel {
+        margin-top: 150px;
+</style>
+<body background="static/soldiers-1002_1920.jpg">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+	</br>
+	<!--style="visibility:hidden;"-->
+	<h3 class="text-center   badge-secondary" >Manage Citizens</h3></br>
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+	  <a class="navbar-brand text-success" href="/admin_account">Admin Home</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item {%if active== 'Add Citizen'%} active{%endif%}">
+			<a class="nav-link" href="?opt=add_citizens">Add Citizen</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Update Citizen'%} active{%endif%}">
+			<a class="nav-link" href="?opt=update_citizens">Update Citizen</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Display Citizen'%} active{%endif%}">
+			<a class="nav-link" href="?opt=display_citizens">Display Citizen</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Delete Citizen'%} active{%endif%}">
+			<a class="nav-link" href="?opt=delete_citizens">Delete Citizen</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link text-danger" href="/logout">Log-Out</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+
+
+	{%if active == 'Add Citizen'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Add Citizen</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/add_citizen">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Name" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-success" placeholder="Phone" name="phone" type="tel" required>
+                            </div>
+							 <div class="form-group">
+                                <input class="form-control text-success" placeholder="Password" name="psw" type="password" required>
+                            </div>
+							 <div class="form-group">
+								 <h6>Select Station</h6>
+                                <select class="form-select" name="station_name" aria-label="Station Selection">
+									{% for station in all_stations %}
+								  	<option value="{{station[1]}}">{{station[1]}}</option>
+									{%endfor%}
+								</select>
+                            </div>
+                             <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> </textarea>
+                            </div>
+
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Add Citizen">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Update Citizen' and citizenToUpdate == None%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Update Citizens:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Password </th>
+					<th align="center">Address </th>
+					<th align="center">Station Name</th>
+					<th align="center">Update </th>
+				</tr>
+				</thead>
+
+				{% for citizen in allCitizens %}
+				<tr>
+					<td align="center">{{citizen[0]}}</td>
+					<td align="center">{{citizen[1]}}</td>
+					<td align="center">{{citizen[2]}}</td>
+					<td align="center">{{citizen[3]}}</td>
+					<td align="center">{{citizen[4]}}</td>
+					<td align="center">{{citizen[5]}}</td>
+
+					<td align="center"><a href="?opt=update_citizens&update_id={{citizen[0]}}" class="btn btn-md btn-primary btn-block">Update</a></td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+	{%if active== 'Update Citizen' and citizenToUpdate != None%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Update Citizen</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/update_citizen">
+                        <fieldset>
+							<div class="form-group">
+								<h5>Citizen ID</h5>
+                                <input class="form-control text-success" value="{{citizenToUpdate[0]}}" placeholder="Citizen id" name="citizen_db_id" type="text" required readonly>
+                            </div>
+                            <div class="form-group">
+								<h5>Name</h5>
+                                <input class="form-control text-success" value="{{citizenToUpdate[1]}}" placeholder="Name" name="name" type="text" required>
+                            </div>
+                            <div class="form-group">
+								<h5>Phone</h5>
+                                <input class="form-control text-success" value="{{citizenToUpdate[2]}}" placeholder="phone" name="phone" type="tel" required>
+                            </div>
+							 <div class="form-group">
+								<h5>Password</h5>
+                                <input class="form-control text-success" value="{{citizenToUpdate[3]}}" placeholder="pass" name="pass" type="text" required>
+                            </div>
+							<div class="form-group">
+								<h6>Station Name : {{citizenToUpdate[5]}} </h6>
+								 <div class="form-group">
+								 <h6>Select Station</h6>
+									<select class="form-select" name="station_name" aria-label="Station Selection">
+										{% for station in all_stations %}
+										<option {%if station[1] == citizenToUpdate[5]%} selected {%endif%}  value="{{station[1]}}">{{station[1]}}</option>
+										{%endfor%}
+									</select>
+                            	</div>
+
+                            </div>
+                             <div class="form-group">
+                                 <h5>Address</h5>
+                                 <textarea class="form-control text-success" placeholder="Address" name="address" type="text" required> {{citizenToUpdate[4]}} </textarea>
+                            </div>
+
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Update Citizen">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+
+
+	{%if active== 'Display Citizen'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Display Citizens:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Password</th>
+					<th align="center">Address</th>
+					<th align="center">Station Name</th>
+				</tr>
+				</thead>
+
+				{% for citizen in allCitizens %}
+				<tr>
+					<td align="center">{{citizen[0]}}</td>
+					<td align="center">{{citizen[1]}}</td>
+					<td align="center">{{citizen[2]}}</td>
+					<td align="center">{{citizen[3]}}</td>
+					<td align="center">{{citizen[4]}}</td>
+					<td align="center">{{citizen[5]}}</td>
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+	{%if active== 'Delete Citizen'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Delete Citizens:</h1>
+
+		    <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Name</th>
+					<th align="center">Phone</th>
+					<th align="center">Password</th>
+					<th align="center">Address</th>
+					<th align="center">Station Name</th>
+					<th align="center">Delete</th>
+				</tr>
+				</thead>
+
+				{% for citizen in allCitizens %}
+				<tr>
+					<td align="center">{{citizen[0]}}</td>
+					<td align="center">{{citizen[1]}}</td>
+					<td align="center">{{citizen[2]}}</td>
+					<td align="center">{{citizen[3]}}</td>
+					<td align="center">{{citizen[4]}}</td>
+					<td align="center">{{citizen[5]}}</td>
+					<td align="center"><a href="delete_citizen?id={{citizen[0]}}" class="btn btn-md btn-danger btn-block">Delete</a></td>
+
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+</body>
+
+</html>

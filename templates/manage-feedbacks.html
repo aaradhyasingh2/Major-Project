@@ -1,0 +1,184 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Manage Feedbacks</title>
+</head>
+<style>
+    .add-keyword-panel {
+        margin-top: 150px;
+</style>
+<body background="static/soldiers-1002_1920.jpg">
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+	</br>
+	<!--style="visibility:hidden;"-->
+	<h3 class="text-center   badge-secondary" >Manage Feedbacks</h3></br>
+	<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+	  <a class="navbar-brand text-success" href="/admin_account">Admin Home</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item {%if active== 'Add Feedback'%} active{%endif%}">
+			<a class="nav-link" href="?opt=add_feedbacks">Add Feedback</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Update Feedback'%} active{%endif%}">
+			<a class="nav-link" href="?opt=update_feedbacks">Update Feedback</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Display Feedback'%} active{%endif%}">
+			<a class="nav-link" href="?opt=display_feedbacks">Display Feedback</span></a>
+		  </li>
+		  <li class="nav-item {%if active== 'Delete Feedback'%} active{%endif%}">
+			<a class="nav-link" href="?opt=delete_feedbacks">Delete Feedback</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link text-danger" href="/logout">Log-Out</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+
+
+	{%if active == 'Add Feedback'%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Submit Feedback</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/add_feedback">
+                        <fieldset>
+
+							 <div class="form-group">
+                                 <h5>Feedback</h5>
+                                 <textarea class="form-control text-success" placeholder="Feedback" name="feedback" type="text" required> </textarea>
+                            </div>
+							<input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Submit Feedback">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Update Feedback' and feedbackToUpdate == None%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Update Feedback:</h1>
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Feedback</th>
+					<th align="center">Time and Date</th>
+					<th align="center">Update</th>
+				</tr>
+				</thead>
+				{% for feedback in allFeedbacks %}
+				<tr>
+					<td align="center">{{feedback[0]}}</td>
+					<td align="center">{{feedback[1]}}</td>
+					<td align="center">{{feedback[2]}}</td>
+					<td align="center"><a href="?opt=update_feedbacks&update_id={{feedback[0]}}" class="btn btn-md btn-primary btn-block">Update</a></td>
+				</tr>
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+	{%if active== 'Update Feedback' and feedbackToUpdate != None%}
+	<div class="row">
+		<div class="col-md-4">
+		</div>
+        <div class="col-md-4">
+            <div class="add-keyword-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title badge-secondary">Update Feedback</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/update_feedback">
+                        <fieldset>
+							<div class="form-group">
+								<h5>Feedback ID</h5>
+                                <input class="form-control text-success" value="{{feedbackToUpdate[0]}}" placeholder="Query id" name="query_db_id" type="text" required readonly>
+                            </div>
+							<div class="form-group">
+                                 <h5>Feedback</h5>
+                                 <textarea class="form-control text-success" placeholder="feedback" name="feedback" type="text" required> {{feedbackToUpdate[1]}} </textarea>
+                            </div>
+                            <input class="btn btn-md btn-warning badge-pill btn-block" type="submit" name="opt" value="Update Feedback">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+	{%endif%}
+
+
+	{%if active== 'Display Feedback'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Display Feedback:</h1>
+
+		   <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Feedback</th>
+					<th align="center">Time and Date</th>
+				</tr>
+				</thead>
+
+				{% for feedback in allFeedbacks %}
+				<tr>
+					<td align="center">{{feedback[0]}}</td>
+					<td align="center">{{feedback[1]}}</td>
+					<td align="center">{{feedback[2]}}</td>
+				</tr>
+
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+
+
+	{%if active== 'Delete Feedback'%}
+	<div class="table-scrol bg-light">
+		 <h1 align="center">Delete Feedback:</h1>
+
+		    <!-- <div class="table-responsive">-->
+			<table class="table table-bordered table-hover table-striped" >
+				<thead>
+				<tr>
+					<th align="center">Id</th>
+					<th align="center">Feedback</th>
+					<th align="center">Time and Date</th>
+					<th align="center">Delete</th>
+				</tr>
+				</thead>
+				{% for feedback in allFeedbacks %}
+				<tr>
+					<td align="center">{{feedback[0]}}</td>
+					<td align="center">{{feedback[1]}}</td>
+					<td align="center">{{feedback[2]}}</td>
+					<td align="center"><a href="delete_feedback?id={{feedback[0]}}" class="btn btn-md btn-danger btn-block">Delete</a></td>
+				</tr>
+				{%endfor%}
+			</table>
+	</div>
+	{%endif%}
+</div>
+</body>
+</html>
